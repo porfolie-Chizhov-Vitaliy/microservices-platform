@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: balance-service
-          image: balance-service:latest
+          image: chizhovvm/balance-service:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8082
