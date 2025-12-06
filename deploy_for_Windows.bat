@@ -1,9 +1,9 @@
 @echo off
-chcp 65001
+@REM chcp 65001
 
 call :log "=== НАЧАЛО УСТАНОВКИ ==="
 echo ========================================
-echo    Начало развертывания test-dbo-system
+echo    Deployment test-dbo-system
 echo ========================================
 echo.
 call :log "Checking installing Docker"
@@ -11,16 +11,16 @@ echo [1/3] Checking installing Docker...
 docker --version
 if errorlevel 1 (
     call :log "ERROR: Необходимо установить Docker Desktop"
-    echo ERROR: Необходимо установить Docker Desktop
-    echo Ссылка на установку Docker Desktop: https://docker.com/products/docker-desktop
+    echo ERROR: Download Docker Desktop
+    echo Link on download Docker Desktop: https://docker.com/products/docker-desktop
     pause
     exit /b 1
 ) else (
     call :log "Docker установлен. Переходим к следующему шагу."
-    echo Docker установлен. Переходим к следующему шагу.
+    echo Docker install.
 )
 call :log "Развертывание в Kubernetes test-dbo-system."
-echo [2/3] Развертывание в Kubernetes test-dbo-system...
+echo [2/3] Deployment Kubernetes test-dbo-system...
 set NAMESPACE=test-dbo-system
 call :log "create namespace test-dbo-system"
 echo create namespace test-dbo-system...
@@ -45,7 +45,7 @@ call :applyResource "Payment Service" k8s/services/payment-service
 call :applyResource "Balance Service" k8s/services/balance-service
 call :applyResource "Notification Service" k8s/services/notification-service
 
-echo  Готово! 
+echo  Done
 
 
 
@@ -53,11 +53,11 @@ echo [3/3] Starting services...
 timeout /t 50 /nobreak
 kubectl get pods -n %NAMESPACE%
 
-echo Открывает сервисы в браузере
+echo Open links on browser
 timeout /t 5 /nobreak
 
 
-echo  Swagger UI Payment API (платежи)
+echo  Swagger UI Payment API (payment-service)
 echo  http://localhost:30081/swagger-ui/index.html
 start "" "http://localhost:30081/swagger-ui/index.html"
 timeout /t 1 /nobreak >nul
@@ -103,9 +103,11 @@ if "%~2"=="-k" (
     kubectl apply -f "%~2" -n %NAMESPACE%
 )
 if errorlevel 1 (
-    echo Предупреждение: %~1
+    echo Warning: %~1
+    call :log "Warning:" %~1
 ) else (
-    echo  %~1 развернут
+    echo  %~1 Done
+    call :log %~1 "Done"
 )
 exit /b
 
