@@ -9,7 +9,7 @@
   
 ## Как проверить работоспособность и отображение информации в Grafana:
 1. Зайти в Grafana (login:admin password:admin)
-2. Запустить скрипт для генерации 100 платежей scripts/for_windows/100_add_payments.bat
+2. Запустить скрипт для генерации 100 платежей scripts/for_windows|linux/100_add_payments.bat
 3. Проверить информацию на дашбордах  
    
 
